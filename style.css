@@ -5,8 +5,8 @@ body {
   margin-bottom: 100px !important;
 }
 .makeCenter {
-  text-align: center;
-  padding: 20px;
+  text-align: center !important;
+  padding: 20px !important;
 }
 .writeComment {
   width: 800px;
