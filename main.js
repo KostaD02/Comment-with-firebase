@@ -71,18 +71,54 @@ setTimeout(() => {
         `;
   });
 }, 1000);
-console.log(commentsArray);
 function checkCorrection() {
   let result = $("#number").val();
-  if (result > 0 && result < 11) return true;
-  else return false;
+  if (result > 0 && result < 11) {
+    let name = $("#Name").val();
+    for (let i = 0; i < name.length; i++) {
+      if (
+        name[i] == "1" ||
+        name[i] == "2" ||
+        name[i] == "3" ||
+        name[i] == "4" ||
+        name[i] == "5" ||
+        name[i] == "6" ||
+        name[i] == "7" ||
+        name[i] == "8" ||
+        name[i] == "9" ||
+        name[i] == "0"
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Don't use numbers on name",
+        });
+        $("#Name").val("");
+        $("#number").val(1);
+        $("#comment").val("");
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return true;
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Rate must be 1-10 ",
+    });
+    $("#Name").val("");
+    $("#number").val(1);
+    $("#comment").val("");
+    return false;
+  }
 }
 function createcomment() {
   if (checkCorrection()) {
     let name = $("#Name").val();
     let rate = $("#number").val();
     let comment = $("#comment").val();
-    console.log(name);
     createComment(name, rate, comment);
     Swal.fire({
       icon: "success",
@@ -93,14 +129,5 @@ function createcomment() {
     setTimeout(() => {
       window.location.reload();
     }, 1500);
-  } else {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Rate must be 1-10!",
-    });
-    $("#Name").val("");
-    $("#number").val(1);
-    $("#comment").val("");
   }
 }
