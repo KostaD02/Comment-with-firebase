@@ -42,6 +42,7 @@ let ref = firebase
     });
   });
 setTimeout(() => {
+  document.getElementById("counter").innerHTML = commentsArray.length;
   commentsArray.forEach((element) => {
     displayComments.innerHTML += `
             <div class="mycard">
@@ -86,7 +87,9 @@ function checkCorrection() {
         name[i] == "7" ||
         name[i] == "8" ||
         name[i] == "9" ||
-        name[i] == "0"
+        name[i] == "0" ||
+        name[i] == "" ||
+        name[i] == " "
       ) {
         Swal.fire({
           icon: "error",
@@ -114,20 +117,59 @@ function checkCorrection() {
     return false;
   }
 }
-function createcomment() {
-  if (checkCorrection()) {
-    let name = $("#Name").val();
-    let rate = $("#number").val();
-    let comment = $("#comment").val();
-    createComment(name, rate, comment);
-    Swal.fire({
-      icon: "success",
-      title: "Success",
-      text: "Your comment uploaded!",
-      timer: 1500,
+function createcomment(option) {
+  if (option == "1") {
+    if (checkCorrection()) {
+      let name = $("#Name").val();
+      let rate = $("#number").val();
+      let comment = $("#comment").val();
+      createComment(name, rate, comment);
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Your comment uploaded!",
+        timer: 1500,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
+  } else {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
     });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1500);
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Deleted!",
+            "Comment has been deleted.",
+            "success"
+          );
+          firebase.database().ref("Comments/").remove();
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Comments are safe :)",
+            "error"
+          );
+        }
+      });
   }
 }

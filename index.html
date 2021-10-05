@@ -24,6 +24,7 @@
 </head>
 
 <body>
+    <h3 class="makeCenter">Number of comments : <span id="counter" class="badge rounded-pill bg-success"></span></h3>
     <section class="comments" id="displayComments">
     </section>
     <section class="writeComment">
@@ -38,7 +39,8 @@
             <textarea class="form-control" id="comment" rows="3"></textarea>
         </div>
         <div class="button">
-            <button onclick="createcomment()" type="button" class="btn btn-primary">Send</button>
+            <button onclick="createcomment('1')" type="button" class="btn btn-primary">Send</button>
+            <button onclick="createcomment('2')" type="button" class="btn btn-danger">Delete Comments</button>
         </div>
     </section>
     <script src="http://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
